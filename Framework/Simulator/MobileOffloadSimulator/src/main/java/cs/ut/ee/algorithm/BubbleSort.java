@@ -7,6 +7,13 @@ import java.util.Vector;
 
 import edu.ut.mobile.network.CloudRemotable;
 
+
+/**
+ * 
+ * @author Huber Flores
+ *
+ */
+
 public class BubbleSort extends CloudRemotable {
 	
 		

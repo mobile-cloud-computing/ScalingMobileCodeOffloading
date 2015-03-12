@@ -19,21 +19,12 @@ public class Controller {
 		int experimentalTime = 0;
 		double interarrivalTime = 0;
 		
-		 /*if (args.length == 0)
-		 {
-	         System.err.println ("Define the number the users to create");
-	         System.exit(0);
-		 }else{
-			users = Integer.valueOf(args[0]);
-		 }*/
-		
-		
 		if (args.length>1){
 			experimentalTime = Integer.valueOf(args[0]);
 			interarrivalTime = Double.parseDouble(args[1]);
 		}else{
 			System.err.println("Missing parameters");
-			System.err.println ("param 1: experimental time, param 2: interarrival time");
+			System.err.println ("param 1: experimental time (in minutes), param 2: interarrival time (in seconds)");
 			System.exit(0);
 		}
 		

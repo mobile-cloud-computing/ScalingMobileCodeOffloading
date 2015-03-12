@@ -4,7 +4,7 @@ import cs.mc.ut.ee.logic.MiniMaxRemote;
 //import cs.ut.ee.algorithm.BubbleSort;
 
 
-/*
+/**
  * author Huber Flores
  */
 

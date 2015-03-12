@@ -1,7 +1,13 @@
 package cs.mc.ut.ee.utilities;
 
+/**
+ * 
+ * @author Huber Flores
+ *
+ */
+
 public class Commons {
 	
-	final static int numberOfClients = 3;
+	final static double fixInterArivalTime = 0.1;
 
 }

@@ -1,7 +1,7 @@
 package cs.mc.ut.ee.simulator;
 
 
-/*
+/**
  * author Huber Flores
  */
 
@@ -9,9 +9,13 @@ public class LoadGenerator {
 	
 	double time;
 	
-	public void generateLoad(int experimentalTime, double interarrivalTime){
-		//experimentalTime is minutes
-		
+	
+	
+	/**
+	 * @param experimentalTime is in minutes, e.g., 5
+	 * @param interarrivalTime is in seconds, e.g., 0.1
+	 */
+	public void generateLoad(int experimentalTime, double interarrivalTime){	
 		
 		time = experimentalTime *60*1000;
 		

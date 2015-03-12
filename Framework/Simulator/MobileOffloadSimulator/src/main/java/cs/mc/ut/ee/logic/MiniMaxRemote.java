@@ -15,6 +15,12 @@ import java.util.Vector;
 
 import edu.ut.mobile.network.CloudRemotable;
 
+/**
+ * 
+ * @author Weikai Li, Huber Flores
+ *
+ */
+
 
 public class MiniMaxRemote extends CloudRemotable {
 
