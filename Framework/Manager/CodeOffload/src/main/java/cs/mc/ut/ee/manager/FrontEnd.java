@@ -132,13 +132,13 @@ public class FrontEnd implements Runnable{
     			
     			if (!surrogate.getApkPool().isEmpty()){
     				response.put("app", app.getAppName());
-    				response.put("ip", surrogate.getSurrogateIP());}
+    				response.put("ip", surrogate.getSurrogateIP());
     				response.put("apkPort", (String) surrogate.getApkPool().pop());
     				response.put("jarFile", surrogate.getJarFile());
     				
     				return response;
     			}
-    			
+    		}
     	}
     		
     	return response;
