@@ -18,6 +18,7 @@ import java.util.Map;
 
 
 import cs.mc.ut.ee.allocation.Surrogate;
+import cs.mc.ut.ee.utilities.RemoteCommandActivation;
 
 import edu.ut.mobile.network.Pack;
 import edu.ut.mobile.network.ResultPack;
@@ -195,14 +196,10 @@ public class CodeOffloadManager implements Runnable{
     public void leavePortListeningForNextRequest(){
     	
     	try {
-			
-			Process send = Runtime.getRuntime().exec(new String[] {"sh", "-c", "cd " + jar +";" + "./rund.sh -cp " + mobileApp+"_Server__"+ apk + ".apk" +" " + "edu.ut.mobile.network.Main"});
+    		RemoteCommandActivation.activateAPK(ipAddress, "huber", "thisisnothepass:D", "cd " + jar +";" + "./rund.sh -cp " + mobileApp+"_Server__"+ apk + ".apk" +" " + "edu.ut.mobile.network.Main");
 			Thread.sleep(500);
 			pushResource(mobileApp, ipAddress, apk);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
