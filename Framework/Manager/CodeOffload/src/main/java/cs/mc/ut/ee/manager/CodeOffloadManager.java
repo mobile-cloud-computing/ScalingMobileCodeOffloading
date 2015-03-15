@@ -196,7 +196,8 @@ public class CodeOffloadManager implements Runnable{
     public void leavePortListeningForNextRequest(){
     	
     	try {
-    		RemoteCommandActivation.activateAPK(ipAddress, "huber", "thisisnothepass:D", "cd " + jar +";" + "./rund.sh -cp " + mobileApp+"_Server__"+ apk + ".apk" +" " + "edu.ut.mobile.network.Main");
+    		//RemoteCommandActivation.activateAPK(ipAddress, "huber", "thisisnothepass", "cd " + jar +";" + "./rund.sh -cp " + mobileApp+"_Server__"+ apk + ".apk" +" " + "edu.ut.mobile.network.Main");
+    		RemoteCommandActivation.activateAPK(ipAddress, "huber", "thisisnothepass", "cd " + "/home/ubuntu/android-x86/" +";" + "./rund.sh -cp " + mobileApp+"_Server__"+ apk + ".apk" +" " + "edu.ut.mobile.network.Main");
 			Thread.sleep(500);
 			pushResource(mobileApp, ipAddress, apk);
 		} catch (InterruptedException e) {

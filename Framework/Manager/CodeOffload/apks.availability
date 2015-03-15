@@ -1,24 +1,30 @@
 {
     "g_chess": {
-        "192.168.1.67": {
+        "54.73.45.208": {
             "ports": [
                 "6001",
                 "6002",
                 "6003",
                 "6004",
-                "6005"
+                "6005",
+                "6006",
+                "6007",
+                "6008",
+                "6009",
+                "6010",
+                "6011",
+                "6012",
+                "6013",
+                "6014",
+                "6015",
+                "6016",
+                "6017",
+                "6018",
+                "6019",
+                "6020"
             ],
             "location": [
-                "/home/huber/Desktop/TechnicalInformation/x86Image/android-x86/g_chess_Server.jar"
-            ]
-        },
-        "127.0.0.1": {
-            "ports": [
-                "5001",
-                "5002"
-            ],
-            "location": [
-                "/home/huber/Desktop/TechnicalInformation/x86Image/android-x86/g_chess_Server.jar"
+                "/home/ubuntu/android-x86/g_chess_Server.jar"
             ]
         }
     },
