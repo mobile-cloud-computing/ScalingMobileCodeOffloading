@@ -1,3 +1,7 @@
+#
+# author Huber Flores
+#
+
 #echo 600$i
 # 6001, 6002, 6003...
 
