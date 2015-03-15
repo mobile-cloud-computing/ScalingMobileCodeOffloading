@@ -31,8 +31,8 @@
     "Nqueens": {
         "172.16.32.3": {
             "ports": [
-                "6001",
-                "6002"
+                "5001",
+                "5002"
             ],
             "location": [
                 "/home/ubuntu/dalvik-86/g_chess_Server.jar"

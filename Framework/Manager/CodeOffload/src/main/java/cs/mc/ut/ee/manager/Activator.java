@@ -20,7 +20,7 @@ public class Activator {
 	public static void main(String[] args) {
         
 		FrontEnd server = new FrontEnd(NetInfo.port);
-		System.out.println("Starting EMCO Server (Evidence-aware Mobile Computational Offloading)");
+		System.out.println("Load Balancer for Mobile Computational Offloading)");
 		new Thread(server).start();
 		
 

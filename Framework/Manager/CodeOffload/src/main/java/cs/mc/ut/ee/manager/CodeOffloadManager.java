@@ -20,6 +20,7 @@ import java.util.Map;
 import cs.mc.ut.ee.allocation.Surrogate;
 import cs.mc.ut.ee.utilities.RemoteCommandActivation;
 
+import edu.ut.mobile.network.NetInfo;
 import edu.ut.mobile.network.Pack;
 import edu.ut.mobile.network.ResultPack;
 
@@ -85,10 +86,12 @@ public class CodeOffloadManager implements Runnable{
             
             //-TODO-(automate)
             //mobile application must be identified a priori
-
+            
+    
             ois.loadClassFromJar(jar);
             request = (Pack) ois.readObject();
     
+            
             /*
              * apkFiles stack has the available apps to use in a specific port
              * The idea is that the file pop is utilized for invocation
@@ -117,6 +120,11 @@ public class CodeOffloadManager implements Runnable{
             dalvikProcess = new APKHandler(surrogate, getPort(apk), jar);*/
             
                        
+            NetInfo.ipAddress = getIpAddress(ipAddress);
+            
+            if (NetInfo.ipAddress==null){
+            	System.out.println("surrogate indefined");
+            }
             
             dalvikProcess = new APKHandler(getIpAddress(ipAddress), Integer.valueOf(apk), jar);
             dalvikProcess.setOffloadRequest(request);
@@ -130,12 +138,12 @@ public class CodeOffloadManager implements Runnable{
             	
             	if (dalvikProcess.getResultPack()!=null){
             		invocation = true;
-            		System.out.println("Result was found");
+            		//System.out.println("Result was found");
             	}
             	
             	if ((System.currentTimeMillis() - wait)>30000){ //previous value 1000000
             		invocation = true;
-            		System.out.println("Result was null or the execution exceed the waiting time");
+            		System.out.println("Result was null or the execution exceed the waiting time, 0");
             	}
             	
 
@@ -147,10 +155,10 @@ public class CodeOffloadManager implements Runnable{
         	oos.flush();
         	oos.writeObject(response);
     		oos.flush(); 
-    		System.out.println("Respose was sent to the mobile: " +  response.getresult());
+    		System.out.println("Respose was sent to the mobile: " +  response.getresult() + ","+ (System.currentTimeMillis() - initialTime) + ",1");
             
             //System.out.println("Response sent to the mobile");
-            System.out.println(System.currentTimeMillis() - initialTime);
+            //System.out.println(System.currentTimeMillis() - initialTime);
             
    
         } catch (IOException e) {
@@ -196,8 +204,8 @@ public class CodeOffloadManager implements Runnable{
     public void leavePortListeningForNextRequest(){
     	
     	try {
-    		//RemoteCommandActivation.activateAPK(ipAddress, "huber", "thisisnothepass", "cd " + jar +";" + "./rund.sh -cp " + mobileApp+"_Server__"+ apk + ".apk" +" " + "edu.ut.mobile.network.Main");
-    		RemoteCommandActivation.activateAPK(ipAddress, "huber", "thisisnothepass", "cd " + "/home/ubuntu/android-x86/" +";" + "./rund.sh -cp " + mobileApp+"_Server__"+ apk + ".apk" +" " + "edu.ut.mobile.network.Main");
+    		//RemoteCommandActivation.activateAPK(ipAddress, "huber", "thisisnotthepass", "cd " + jar +";" + "./rund.sh -cp " + mobileApp+"_Server__"+ apk + ".apk" +" " + "edu.ut.mobile.network.Main");
+    		RemoteCommandActivation.activateAPK(ipAddress, "huber", "thisisnotthepass", "cd " + "/home/ubuntu/android-x86/" +";" + "nohup ./rund.sh -cp " + mobileApp+"_Server__"+ apk + ".apk" +" " + "edu.ut.mobile.network.Main &");
 			Thread.sleep(500);
 			pushResource(mobileApp, ipAddress, apk);
 		} catch (InterruptedException e) {
