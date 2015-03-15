@@ -13,7 +13,7 @@ import java.util.List;
 
 import cs.mc.ut.ee.allocation.Surrogate;
 
-/*
+/**
  * author Huber Flores
  */
 
