@@ -1,3 +1,4 @@
+
 #
 # author Huber Flores
 #
@@ -13,8 +14,14 @@ done
 
 for j in {10..20}
 do
- nohup ./rund.sh -cp g_chess_Server__60${i}.apk edu.ut.mobile.network.Main &
+ nohup ./rund.sh -cp g_chess_Server__60${j}.apk edu.ut.mobile.network.Main &
 done
 
 netstat -ntlp | grep :60
+
+netstat -ntlp | grep :601
+
+netstat -ntlp | grep :602
+
+
 
