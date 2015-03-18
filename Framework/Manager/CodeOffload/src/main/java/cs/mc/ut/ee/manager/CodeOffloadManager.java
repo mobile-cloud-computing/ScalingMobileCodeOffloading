@@ -47,16 +47,10 @@ public class CodeOffloadManager implements Runnable{
 	ObjectOutputStream oos = null;
 	
 	double initialTime;
+	
+	String surrogateNumber;
 
 
-    /**public CodeOffloadManager(Socket proxyConnection, String mobileApp, String jar, String apk) {
-        this.proxyConnection = proxyConnection;
-        this.mobileApp = mobileApp;
-        this.jar = jar;
-        this.apk = apk;
-                
-    }*/
-    
     public CodeOffloadManager(double time, Socket proxyConnection, Map<String, String> response) {
         this.proxyConnection = proxyConnection;
         this.mobileApp = response.get("app");
@@ -64,12 +58,14 @@ public class CodeOffloadManager implements Runnable{
         this.apk = response.get("apkPort");
         this.ipAddress = response.get("ip");
         this.initialTime = time;
+        
+        this.surrogateNumber = response.get("number");
                 
     }
 
     public void run() {
         try {
-        	System.out.println("Handling a code offload request");
+        	//System.out.println("Handling a code offload request");
         
         	in = proxyConnection.getInputStream();
             out = proxyConnection.getOutputStream();
@@ -126,12 +122,13 @@ public class CodeOffloadManager implements Runnable{
             	System.out.println("surrogate indefined");
             }
             
+            long cloudProcessing = System.currentTimeMillis();
             dalvikProcess = new APKHandler(getIpAddress(ipAddress), Integer.valueOf(apk), jar);
             dalvikProcess.setOffloadRequest(request);
             dalvikProcess.connect();
             dalvikProcess.execute();
                      
-         
+            boolean success = true;
             long wait = System.currentTimeMillis();
             boolean invocation = false;
             while (!invocation){
@@ -141,9 +138,11 @@ public class CodeOffloadManager implements Runnable{
             		//System.out.println("Result was found");
             	}
             	
-            	if ((System.currentTimeMillis() - wait)>30000){ //previous value 1000000
+            	if ((System.currentTimeMillis() - wait)>15000){ //responsiveness limit should not exceed the mobile counterpart
             		invocation = true;
-            		System.out.println("Result was null or the execution exceed the waiting time, 0");
+            		success = false;
+            		long cloudTime = System.currentTimeMillis() - cloudProcessing;
+            		System.out.println("Surrogate: " + surrogateNumber+":"+apk + ", Result was null or the execution exceed the waiting time" + ","+ (System.currentTimeMillis() - initialTime - cloudTime) + ",0");
             	}
             	
 
@@ -155,7 +154,19 @@ public class CodeOffloadManager implements Runnable{
         	oos.flush();
         	oos.writeObject(response);
     		oos.flush(); 
-    		System.out.println("Respose was sent to the mobile: " +  response.getresult() + ","+ (System.currentTimeMillis() - initialTime) + ",1");
+    		
+    		
+    		if (response==null){
+    			System.out.println("null value in Surrogate: " +  surrogateNumber+":"+apk);
+    		}
+    		
+    		
+    		if (success==true){
+    			long cloudTime = System.currentTimeMillis() - cloudProcessing;
+        		System.out.println("Surrogate: " + surrogateNumber + ", Respose was sent to the mobile: " +  response.getresult() + ","+ (System.currentTimeMillis() - initialTime - cloudTime) + ",1");	
+    		}
+    		
+    		
             
             //System.out.println("Response sent to the mobile");
             //System.out.println(System.currentTimeMillis() - initialTime);
@@ -222,7 +233,7 @@ public class CodeOffloadManager implements Runnable{
     	   surrogate = findResources(appName).getBackEnd().get(i);
     			
     	   if (surrogate.getSurrogateIP().equals(ipAddress)){
-    		   findResources(appName).getBackEnd().get(i).getApkPool().push(apk);
+    		   findResources(appName).getBackEnd().get(i).getApkPool().add(apk);
     	   }
     	}		
  

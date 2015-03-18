@@ -1,6 +1,6 @@
 package cs.mc.ut.ee.allocation;
 
-import java.util.Stack;
+import java.util.LinkedList;
 
 /**
  * 
@@ -11,7 +11,7 @@ import java.util.Stack;
 public class Surrogate {
 	String jarFile;  //code to reconstruct the request in each component of the system
 	
-	Stack apkPool;   //ports in which the app is listening
+	LinkedList<String> apkPool;   //ports in which the app is listening
 	
 	String ipAddress; //surrogate address
 	
@@ -20,13 +20,13 @@ public class Surrogate {
 	 */
 	  
 	
-	public Surrogate(Stack apkPool, String ipAddress, String jarFile){
+	public Surrogate(LinkedList<String> apkPool, String ipAddress, String jarFile){
 		setApkPool(apkPool);
 		setSurrogateIP(ipAddress);
 		setJarFile(jarFile);
 	}
 	
-	public void setApkPool(Stack apkPool){
+	public void setApkPool(LinkedList<String> apkPool){
 		this.apkPool = apkPool;
 	}
 	
@@ -35,7 +35,7 @@ public class Surrogate {
 	
 	}
 	
-	public Stack getApkPool(){
+	public LinkedList<String> getApkPool(){
 		return this.apkPool;
 	}
 	

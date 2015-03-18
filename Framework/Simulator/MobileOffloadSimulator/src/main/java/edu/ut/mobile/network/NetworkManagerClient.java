@@ -93,6 +93,9 @@ public class NetworkManagerClient {
 
                 result = (ResultPack) ois.readObject();
                 
+                /*this is for collecting times across the infrastructure
+                 *remember that the times of the servers must be synchronized with a central authority, otherwise the measurements are unreliable. 
+                
                 List<String> timestamps = result.getTimeStamps();
                 
                 
@@ -105,8 +108,14 @@ public class NetworkManagerClient {
                 double processTime = (Double.parseDouble(time4[0]) - Double.parseDouble(time3[0]));
                 
                 
-                System.out.println("Total time of the request: " + (Double.parseDouble(time2[0]) - Double.parseDouble(time1[0])) + "/" + "processing time: " + processTime );
+                System.out.println("Total time of the request:, " + (Double.parseDouble(time2[0]) - Double.parseDouble(time1[0])) + "/" + "processing time: " + processTime );*/
+                
+                if (result==null)
+                	System.out.println("Result is null");
+                else
+                	System.out.println("Total time of the request:," + (System.currentTimeMillis() - startTime));
 
+                
                 if((System.currentTimeMillis() - startTime) < NetInfo.waitTime){
                     if(result == null)
                         callingparent.setResult(null, null);

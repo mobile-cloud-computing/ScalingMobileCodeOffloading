@@ -14,6 +14,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -43,12 +44,14 @@ public class FrontEnd implements Runnable{
     protected boolean      isStopped    = false;
     protected Thread       runningThread= null;
     
+    protected int roundRobinCounter = 0;
+    
     public static ArrayList<AppResources> resources = new ArrayList<AppResources>();;
     
     public FrontEnd(int port){
         this.serverPort = port;
         loadBackEndAPKS("apks.availability");
-        listAPKsInBackEnd("g_chess");   
+        //listAPKsInBackEnd("g_chess");   
     }
 
     /**
@@ -75,14 +78,20 @@ public class FrontEnd implements Runnable{
             
             Map<String, String> response = getResource("g_chess");
         	if (response!=null){ //no surrogates with the app
-        	    new Thread(
-                        new CodeOffloadManager(System.currentTimeMillis(),
-                            clientSocket, response)
-                    ).start();
+        		
+        		if (response.get("apkPort").length()>0){
+        		
+        			new Thread(
+        					new CodeOffloadManager(System.currentTimeMillis(),
+        							clientSocket, response)
+        					).start();
     
-        	    
+        		}else{
+        			System.out.println("No slots available for code offloading!,0");
+        		}
+        		
     		}else{
-    			System.out.println("No slots available for code offloading!");
+    			System.out.println("No surrogate available for code offloading!,0");
     		}
     	
         }
@@ -123,22 +132,30 @@ public class FrontEnd implements Runnable{
     	Surrogate surrogate = null;;
     	Map<String, String> response = null;
     	
+    	roundRobinCounter++;
+    	
+    	if (roundRobinCounter>app.getBackEnd().size()-1){
+    		roundRobinCounter = 0;
+    	}
+    	
     	
     	if (app!=null){
             response = new HashMap<String, String>();
 
-    		for (int i=0; i<app.getBackEnd().size(); i++){
-    			surrogate = app.getBackEnd().get(i);
+    		//for (int i=0; i<app.getBackEnd().size(); i++){
+    			//surrogate = app.getBackEnd().get(i);
+    			surrogate = app.getBackEnd().get(roundRobinCounter);
     			
     			if (!surrogate.getApkPool().isEmpty()){
     				response.put("app", app.getAppName());
     				response.put("ip", surrogate.getSurrogateIP());
-    				response.put("apkPort", (String) surrogate.getApkPool().pop());
+    				response.put("apkPort", (String) surrogate.getApkPool().removeFirst());
     				response.put("jarFile", surrogate.getJarFile());
     				
+    				response.put("number", roundRobinCounter+"");
     				return response;
     			}
-    		}
+    		//}
     	}
     		
     	return response;
@@ -179,7 +196,7 @@ public class FrontEnd implements Runnable{
       */
 	 public void loadBackEndAPKS(String filePath){
 		 InputStream in;
-		 Stack apkPool=null;
+		 LinkedList<String> apkPool=null;
 		 String path="";
 		 List<Surrogate> backEnd = null;
 		 
@@ -212,11 +229,11 @@ public class FrontEnd implements Runnable{
 						String attribute = subsubIterator.next();
 						
 						if (attribute.equals("ports")){
-							apkPool = new Stack();
+							apkPool = new LinkedList<String>();
 							List<String> ports = map.get(appName).get(ip).get(attribute);
 							Iterator value = ports.iterator();
 							while (value.hasNext()){
-								apkPool.push(value.next());
+								apkPool.add(value.next()+"");
 							}
 						}else{
 							if (attribute.equals("location")){

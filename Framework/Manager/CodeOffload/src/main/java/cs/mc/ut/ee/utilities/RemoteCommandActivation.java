@@ -33,7 +33,7 @@ public class RemoteCommandActivation {
 				session.setPassword(password);
 				session.setConfig(config);
 				session.connect();
-				System.out.println("Connected "+user+"@"+host);
+				//System.out.println("Connected "+user+"@"+host);
 
 				Channel channel=session.openChannel("exec");
 				((ChannelExec)channel).setCommand(cmd);
@@ -51,9 +51,9 @@ public class RemoteCommandActivation {
 
 				channel.disconnect();
 				session.disconnect();
-				System.out.println("disconnected");
+				//System.out.println("disconnected");
 			}catch(Exception e){
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 
 			return (s != null)?s:"no matches found";
