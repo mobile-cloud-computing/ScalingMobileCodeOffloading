@@ -10,6 +10,13 @@ How to cite
 Soon...
 
 
+System overview
+===========
+
+![alt text](https://raw.githubusercontent.com/huberflores/ScalingMobileCodeOffloading/master/Scaling-mobile-code-offloading.png "Scaling Mobile Computational Offloading")
+
+
+
 Installation
 ============
 
