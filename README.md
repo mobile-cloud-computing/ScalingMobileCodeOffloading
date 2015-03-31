@@ -10,6 +10,12 @@ How to cite
 Soon...
 
 
+Contact information 
+-------------------
+
+Send your questions to :email: huber AT ut DOT ee
+
+
 System overview
 ===========
 
