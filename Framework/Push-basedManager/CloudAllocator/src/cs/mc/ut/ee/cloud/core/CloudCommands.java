@@ -7,6 +7,7 @@ import java.util.List;
 
 import cs.mc.ut.ee.cloud.data.DeploymentResources;
 import cs.mc.ut.ee.cloud.data.Instance;
+import cs.mc.ut.ee.cloud.data.InstanceLaunch;
 
 /**
  * 
@@ -18,6 +19,12 @@ import cs.mc.ut.ee.cloud.data.Instance;
 public class CloudCommands {
 	
 	
+	/**
+	 * In case your EC2Tools environment is not configured properly.
+	 * This procedure configures environmental variables.
+	 * @param private_key
+	 * @param certificate_key
+	 */
 	public static void configureKeys(String private_key, String certificate_key) {
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter("amazon"));
@@ -64,32 +71,56 @@ public class CloudCommands {
 		return instances;
 	}
 
-	/**RESERVATION	r-c14d2325	728681021428	default
-	INSTANCE	i-9ff34135	ami-c42fd9b3			pending		0		m1.medium	2015-06-18T09:01:14+0000	eu-west-1a	aki-71665e05			monitoring-disabled					ebs					paravirtual	xen		sg-d7fad0a3	default	false*/
-	public static void launchInstance(DeploymentResources config, int numberOfInstances){
-		
-		String output = ExecuteCommand.executeCommand(
+	
+	public static List<InstanceLaunch> launchInstance(DeploymentResources config, int numberOfInstances){
+		List<InstanceLaunch> instances = new ArrayList<InstanceLaunch>();
+		String [] output = ExecuteCommand.executeCommand(
 				"ec2-run-instances "+ config.getImageId() + " -n " + numberOfInstances + " -K " + config.getAccessKey() + " -C " + config.getCert() +
 				" --instance-type " +  config.getInstanceType() + " --region eu-west-1"
-			);
+			).split("\n");
 		
-		System.out.println("Command result: " + output);
+		for( InstanceLaunch tmp : instances ){
+			tmp.listed = false;
+		}
+		
+		for( String line : output){
+			InstanceLaunch tmp = new InstanceLaunch(line);
+			if(tmp.state.equals("pending") /*&& tmp.key.equals(config.getKeyName())*/){
+				instances.add(tmp);
+				//System.out.println("Launched new instance:\n" + tmp);
+			}
+		}
+		
+		return instances;
 	}
 	
-	
+	/**
+	 * terminate a specific instance
+	 * @param instanceID
+	 */
 	public static void terminateInstance(String instanceID){
-		
 		String output= ExecuteCommand.executeCommand("ec2-terminate-instances "+ instanceID);
-		
 		System.out.println("Command result: " + output);
 		 
 	}
 	
-	
+	/**
+	 * start an instance in the default region
+	 * @param instanceID
+	 */
 	public static void startInstance(String instanceID){
 		
 		String output= ExecuteCommand.executeCommand("ec2-start-instances "+ instanceID);
 	
+		System.out.println("Command result: " + output);
+	}
+	
+	/**
+	 * start an instance in a specific region
+	 * @param region
+	 */
+    public static void startInstance(String instanceID, String region){
+		String output= ExecuteCommand.executeCommand("ec2-start-instances "+ instanceID + " --region " + region);
 		System.out.println("Command result: " + output);
 	}
 	
@@ -98,9 +129,7 @@ public class CloudCommands {
 	 * stop instances in the default region
 	 */
 	public static void stopInstances(String instanceID){
-	
 		String output= ExecuteCommand.executeCommand("ec2-stop-instances "+ instanceID);
-		
 		System.out.println("Command result: " + output);
 	
 	}
@@ -110,9 +139,7 @@ public class CloudCommands {
 	 * @param region, e.g., eu-west-1 (Ireland)
 	 */
 	public static void stopInstances(String instanceID, String region){
-		
 		String output= ExecuteCommand.executeCommand("ec2-stop-instances "+ instanceID + " --region " + region );
-		
 		System.out.println("Command result: " + output);
 	
 	}
