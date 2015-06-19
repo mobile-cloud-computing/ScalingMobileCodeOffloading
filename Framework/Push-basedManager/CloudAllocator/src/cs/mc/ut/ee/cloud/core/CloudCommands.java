@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cs.mc.ut.ee.cloud.data.DeploymentResources;
-import cs.mc.ut.ee.cloud.data.Instance;
+import cs.mc.ut.ee.cloud.data.InstanceDescriptor;
 import cs.mc.ut.ee.cloud.data.InstanceLaunch;
 
 /**
@@ -15,13 +15,10 @@ import cs.mc.ut.ee.cloud.data.InstanceLaunch;
  *
  */
 
-
 public class CloudCommands {
-	
-	
+
 	/**
-	 * In case your EC2Tools environment is not configured properly.
-	 * This procedure configures environmental variables.
+	 * Configures environmental variables for Amazon EC2 tools.
 	 * @param private_key
 	 * @param certificate_key
 	 */
@@ -39,23 +36,32 @@ public class CloudCommands {
 		}
 	}
 	
-	public static List<Instance> fetchRunningInstances(DeploymentResources config){
-		List<Instance> instances = new ArrayList<Instance>();
+	/**
+	 * Retrieves the instances running in a specific region 
+	 * @param config
+	 * @return
+	 */
+	public static List<InstanceDescriptor> fetchRunningInstances(DeploymentResources config, String region){
+		List<InstanceDescriptor> instances = new ArrayList<InstanceDescriptor>();
 		String[] payload = ExecuteCommand.executeCommand(
 				"ec2-describe-instances --region eu-west-1 -K " + config.getAccessKey() + " -C " + config.getCert()
 			).split("\n");
 		
-		for( Instance tmp : instances ){
+		/*String[] payload = ExecuteCommand.executeCommand(
+				"ec2-describe-instances --region "+ region+ " -K " + config.getAccessKey() + " -C " + config.getCert()
+			).split("\n");*/
+		
+		for( InstanceDescriptor tmp : instances ){
 			tmp.listed = false;
 		}
 		
 		for( String line : payload ){
 			/** try to read INSTANCE information */
-			Instance tmp = new Instance(line);
+			InstanceDescriptor tmp = new InstanceDescriptor(line);
 			/** only select the ones, which have state changed to running */
 			if(tmp.state.equals("running") /*&& tmp.key.equals(config.getKeyName())*/){
 				boolean found = false;
-				for( Instance instance : instances ){
+				for( InstanceDescriptor instance : instances ){
 					if(instance.id.equals(tmp.id)){
 						instance.listed = true;
 						found = true;
@@ -71,7 +77,12 @@ public class CloudCommands {
 		return instances;
 	}
 
-	
+	/**
+	 * Launch new instances and return the information associated to the instances
+	 * @param config
+	 * @param numberOfInstances
+	 * @return
+	 */
 	public static List<InstanceLaunch> launchInstance(DeploymentResources config, int numberOfInstances){
 		List<InstanceLaunch> instances = new ArrayList<InstanceLaunch>();
 		String [] output = ExecuteCommand.executeCommand(
@@ -82,6 +93,7 @@ public class CloudCommands {
 		for( InstanceLaunch tmp : instances ){
 			tmp.listed = false;
 		}
+		
 		
 		for( String line : output){
 			InstanceLaunch tmp = new InstanceLaunch(line);
@@ -95,7 +107,7 @@ public class CloudCommands {
 	}
 	
 	/**
-	 * terminate a specific instance
+	 * Terminate a specific instance
 	 * @param instanceID
 	 */
 	public static void terminateInstance(String instanceID){
@@ -105,7 +117,7 @@ public class CloudCommands {
 	}
 	
 	/**
-	 * start an instance in the default region
+	 * Start an instance in the default region
 	 * @param instanceID
 	 */
 	public static void startInstance(String instanceID){
@@ -116,7 +128,7 @@ public class CloudCommands {
 	}
 	
 	/**
-	 * start an instance in a specific region
+	 * Start an instance in a specific region
 	 * @param region
 	 */
     public static void startInstance(String instanceID, String region){
@@ -126,7 +138,7 @@ public class CloudCommands {
 	
 	
 	/**
-	 * stop instances in the default region
+	 * Stop instances in the default region
 	 */
 	public static void stopInstances(String instanceID){
 		String output= ExecuteCommand.executeCommand("ec2-stop-instances "+ instanceID);
@@ -135,7 +147,7 @@ public class CloudCommands {
 	}
 	
 	/**
-	 * stops instances in a specific region
+	 * Stop instances in a specific region
 	 * @param region, e.g., eu-west-1 (Ireland)
 	 */
 	public static void stopInstances(String instanceID, String region){
