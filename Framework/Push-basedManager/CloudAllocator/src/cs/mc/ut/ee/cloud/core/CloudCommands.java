@@ -69,7 +69,7 @@ public class CloudCommands {
 				}
 				if(!found){
 					instances.add(tmp);
-					//System.out.println("Found new instance:\n" + tmp);
+					//System.out.println("Found new instance:\n" + tmp.toString());
 				}
 			}
 		}

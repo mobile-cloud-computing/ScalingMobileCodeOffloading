@@ -10,6 +10,9 @@
 
 package cs.mc.ut.ee.cloud.data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *  author Huber Flores
  */
@@ -23,25 +26,46 @@ public class InstanceDescriptor {
 				dnsprivate = "",	/** use this as ID */
 				dnspublic = "",
 				state = "",
+				code = "",
+				date = "",
 				type = "",
 				key = "", 
-				region = "";
+				monitor = "",
+				region = "",
+				hardware = "";
 	public boolean configured = false,
 			listed = true;
 	
 	public InstanceDescriptor(String line){
 		String[] col = line.split("\t");
+		List<String> values = new ArrayList<String>();
+		
 		if(col[0].equals("INSTANCE")){
-			id = col[1];
-			ami = col[2];
-			dnsprivate = col[4];
-			dnspublic = col[3];
-			state = col[5];
-			key = col[6];
-			type = col[9];
-			region = col[11];
-			ippublic = col[16];
-			ipprivate = col[17];
+			
+			for (String value: col){
+				if ((value.trim().length()>0) & (!value.equals("INSTANCE"))){
+					values.add(value);
+					//System.out.println(value);
+					
+				}
+			}
+			
+			id = values.get(0);
+			ami = values.get(1);
+			dnsprivate = values.get(2);
+			dnspublic = values.get(3);
+			state = values.get(4);
+			code = values.get(6);
+			type = values.get(7);
+			date = values.get(8);
+			region = values.get(9);
+			key = values.get(10);
+			monitor = values.get(11);
+			ippublic = values.get(12);
+			ipprivate = values.get(13);
+			hardware = values.get(14);
+
+			
 		}
 	}
 	
