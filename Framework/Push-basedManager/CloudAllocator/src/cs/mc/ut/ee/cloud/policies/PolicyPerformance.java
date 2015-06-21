@@ -37,15 +37,22 @@ public class PolicyPerformance extends Policy {
 		return this.monitoring;
 	}
 
+
 	@Override
-	public void coolDownTime() {
+	public void coolDownTime(long time) {
 		// TODO Auto-generated method stub
 		try {
-			Thread.sleep(30000);
+			Thread.sleep(time);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+	}
+
+	@Override
+	public void monitoringTime(long time) {
+		// TODO Auto-generated method stub
 		
 	}
 

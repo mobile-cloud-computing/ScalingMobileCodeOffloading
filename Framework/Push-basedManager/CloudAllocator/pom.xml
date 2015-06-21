@@ -1,31 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-<groupId>Push-basedCodeOffload</groupId>
-  <artifactId>Push-basedCodeOffload</artifactId>
+<modelVersion>4.0.0</modelVersion>
+  <groupId>CloudAllocator</groupId>
+  <artifactId>CloudAllocator</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
   
   	<dependencies>
   		
-        
-    <dependency>
-      <groupId>com.googlecode.json-simple</groupId>
-	  <artifactId>json-simple</artifactId>
-	  <version>1.1</version>
-    </dependency>
-    
-    <dependency>
-      <groupId>com.google.code.gson</groupId>
-      <artifactId>gson</artifactId>
-      <version>1.4</version>
-    </dependency>
-    
-    <dependency>
-	  <groupId>com.jcraft</groupId>
-	  <artifactId>jsch</artifactId>
-	  <version>0.1.51</version>
-    </dependency>
+  
 
   	</dependencies>
   
@@ -46,7 +29,7 @@
                                         <failIfMissing>true</failIfMissing>
                                         <aggregate>true</aggregate>
                                         <properties>
-                                                <projectname>Push-based Code Offload Manager</projectname>
+                                                <projectname>Cloud Allocator Library</projectname>
                                                 <projecturl>http://math.ut.ee</projecturl>
                                                 <organization>University of Tartu</organization>
                                                 <owner>Huber Flores</owner>
@@ -98,8 +81,8 @@
 								<artifactId>maven-compiler-plugin</artifactId>
 								<version>2.3.2</version>
 								<configuration>
-									<source>${jdk.version}</source>
-									<target>${jdk.version}</target>
+									<source>1.6</source>
+									<target>1.6</target>
 								</configuration>
 	 				    </plugin>
 	 				    
@@ -111,7 +94,7 @@
   								<configuration>
 									<archive>
 										<manifest>
-											<mainClass>cs.mc.ut.ee.push.manager.Activator</mainClass>
+											<mainClass>cs.mc.ut.ee.manager.Activator</mainClass>
 										</manifest>
 									</archive>
   								</configuration>
@@ -130,7 +113,7 @@
 									<archive>
 									<!--Used to add the main class to the manifest-->
 										<manifest>
-											<mainClass>cs.mc.ut.ee.manager.Activator</mainClass>
+											<mainClass>cs.mc.ut.ee.cloud.core.Cloner</mainClass>
 										</manifest>
 									</archive>
 								<descriptorRefs>
