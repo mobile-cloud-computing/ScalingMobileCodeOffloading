@@ -35,6 +35,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import cs.mc.ut.ee.allocation.Surrogate;
+import cs.mc.ut.ee.cloud.core.Cloner;
+import cs.mc.ut.ee.cloud.policies.PolicyPerformance;
 import cs.mc.ut.ee.manager.AppResources;
 import cs.mc.ut.ee.push.manager.CodeOffloadManager;
 
@@ -270,6 +272,20 @@ public class PushManager implements Runnable{
         
         return null;
     }
+    
+    
+    /**
+     * Activates autoscale mechanisms to clone the server.
+     */
+    public void activateAutoScaleMechanisms(){
+    	PolicyPerformance policy = new PolicyPerformance();
+    	
+    	new Thread(
+                new Cloner(policy)
+            ).start();
+    	
+    }
+    
     
   
     /*

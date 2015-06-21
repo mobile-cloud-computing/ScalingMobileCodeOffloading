@@ -73,17 +73,18 @@ public class Cloner implements Runnable{
 					}else{
 						System.out.println("Server could not be replicated");
 					}
-					scaling.coolDownTime();
+					scaling.coolDownTime(30000);
 				}else{
 					if (scaling.scaleDown()){
 						removeInstance();
-						scaling.coolDownTime();
+						scaling.coolDownTime(30000);
 					}
 				}			
 				
 			}	
 			
 		}else{
+			scaling.setMonitoring(true);
 			System.out.println("Replication service not available");
 		}
 			

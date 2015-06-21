@@ -15,5 +15,7 @@ public interface CloudScale {
 	
 	public boolean scaleDown();
 	
-	public void coolDownTime();
+	public void coolDownTime(long time);
+	
+	public void monitoringTime(long time);
 }
