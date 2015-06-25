@@ -9,14 +9,44 @@
 
 package cs.mc.ut.ee.cloud.policies;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.OperatingSystemMXBean;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import cs.mc.ut.ee.cloud.core.ExecuteCommand;
+import cs.mc.ut.ee.cloud.data.DeploymentResources;
+
+/**
+ * 
+ * Simple procedures to get CPU and memory usage using Systat (SAR).
+ * It is expected that in practice, performance information is
+ * obtained by using other specialized tools, such as CollectD, etc.
+ *
+ */
+
 public class PolicyPerformance extends Policy {
 
+	DeploymentResources fileConfig = DeploymentResources.getInstance();
 		
 	@Override
 	public boolean scaleUp() {
 		// TODO Auto-generated method stub
+	    boolean scale = false;
 		
-		return false;
+		String cpuIdle = getCPULevels(2,3);
+		if (cpuIdle!=null){
+			int cpuIdleValue = Integer.valueOf(cpuIdle);
+			int cpuUtilization = 100 - cpuIdleValue;
+			
+			if (cpuUtilization > fileConfig.getCpuUpper()){
+				scale = true;
+			}
+		}
+		
+		return scale;
 	}
 
 	@Override
@@ -55,8 +85,62 @@ public class PolicyPerformance extends Policy {
 		// TODO Auto-generated method stub
 		
 	}
+	
 
+	
+	/**
+	 * 
+	 * @param interval is the period of time
+	 * @param times is the number of measurements in that interval
+	 */
+	public String getCPULevels(int interval, int times){
+		String [] output = ExecuteCommand.executeCommand("sar -u -o sarfile "+ interval+ " "+ times).split("\n");
+		Pattern whitespace = Pattern.compile("\\s+");
+		Matcher matcher;
+		String newLine = ""; 
+		String averageCpuIdle = null;
+		
+		
+		for (String line: output){
+			matcher = whitespace.matcher(line);
+			while (matcher.find()){
+				newLine = matcher.replaceAll("\t");
+			}
 
-
+			
+			String[] linePart = newLine.split("\t");
+			
+			if (linePart[0].endsWith("Average:")){
+				averageCpuIdle = linePart[linePart.length-1];
+			}
+			
+		}
+		
+		return averageCpuIdle;
+	}
+	
+	
+	
+	
+	
+	/**
+	 * static information about multiple machine features.
+	 */
+	private static void printUsage() {
+		  OperatingSystemMXBean operatingSystemMXBean = ManagementFactory.getOperatingSystemMXBean();
+		  for (Method method : operatingSystemMXBean.getClass().getDeclaredMethods()) {
+		    method.setAccessible(true);
+		    if (method.getName().startsWith("get") 
+		        && Modifier.isPublic(method.getModifiers())) {
+		            Object value;
+		        try {
+		            value = method.invoke(operatingSystemMXBean);
+		        } catch (Exception e) {
+		            value = e;
+		        } 
+		        System.out.println(method.getName() + " = " + value);
+		    } 
+		  } 
+	}
 
 }
