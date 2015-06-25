@@ -62,6 +62,9 @@ public class PushManager implements Runnable{
 	}
 
 	public void run(){
+		//auto-scaling 
+		activateAutoScaleMechanisms();
+		
         synchronized(this){
             this.runningThread = Thread.currentThread();
         }
