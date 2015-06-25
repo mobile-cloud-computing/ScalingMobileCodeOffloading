@@ -38,12 +38,14 @@ public class PolicyPerformance extends Policy {
 		
 		String cpuIdle = getCPULevels(2,3);
 		if (cpuIdle!=null){
-			int cpuIdleValue = Integer.valueOf(cpuIdle);
-			int cpuUtilization = 100 - cpuIdleValue;
+			double cpuIdleValue = Double.parseDouble(cpuIdle);
+			int cpuUtilization = (int) (100 - cpuIdleValue);
 			
 			if (cpuUtilization > fileConfig.getCpuUpper()){
 				scale = true;
 			}
+			
+			System.out.println("CPU utilization: " +  cpuUtilization + ", CPU threshold:" + fileConfig.getCpuUpper());
 		}
 		
 		return scale;
@@ -118,9 +120,6 @@ public class PolicyPerformance extends Policy {
 		
 		return averageCpuIdle;
 	}
-	
-	
-	
 	
 	
 	/**
