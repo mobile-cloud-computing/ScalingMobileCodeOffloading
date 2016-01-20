@@ -1,0 +1,22 @@
+{
+    "g_chess": {
+        "52.28.113.22": {
+            "ports": [
+                "6001"
+                ],
+            "location": [
+                "/home/huber/Desktop/TechnicalInformation/x86Image/android-x86/g_chess_Server.jar"
+            ]
+        }
+    },   
+    "Nqueens": {
+        "172.16.32.3": {
+            "ports": [
+                "6001"
+            ],
+            "location": [
+                "/home/huber/Desktop/TechnicalInformation/x86Image/android-x86/g_chess_Server.jar"
+            ]
+        }
+    }
+}
