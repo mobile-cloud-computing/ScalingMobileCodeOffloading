@@ -24,6 +24,11 @@ public class Pack implements Serializable{
     
     //Timestamps
     List<String> timestamps = new ArrayList<String>();
+    
+    int accGroup = 0;
+    double RTT = 0;
+    double energy = 0;
+    
 
     public Pack(String functionName, Class stateType, Object state, Object[] paramValues, Class[] FuncDTypes) {
         this.functionName = functionName;
@@ -32,6 +37,7 @@ public class Pack implements Serializable{
         this.paramValues = paramValues;
         this.paramTypes = FuncDTypes;
         timestamps.add(System.currentTimeMillis()+",client1");
+        
     }
 
     public String getfunctionName(){
@@ -56,6 +62,18 @@ public class Pack implements Serializable{
     
     public List<String> getTimeStamps(){
     	return timestamps;
+    }
+    
+    public int getDeviceAccGroup(){
+    	return accGroup;
+    }
+    
+    public double getDeviceRTT(){
+    	return RTT;
+    }
+    
+    public double getDeviceEnergy(){
+    	return energy;
     }
     
 }

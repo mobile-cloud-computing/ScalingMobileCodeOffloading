@@ -18,7 +18,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Stack;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -31,6 +30,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import cs.mc.ut.ee.allocation.Surrogate;
+import fi.cs.ubicomp.database.traces.DBCollector;
+
 
 
 /**
@@ -46,11 +47,15 @@ public class FrontEnd implements Runnable{
     
     protected int roundRobinCounter = 0;
     
+    DBCollector dbcollector;
+    
     public static ArrayList<CodeResources> resources = new ArrayList<CodeResources>();;
     
     public FrontEnd(int port){
         this.serverPort = port;
         loadBackEndCodeInfo("surrogate.availability");
+        
+        dbcollector = DBCollector.getInstance();
      
     }
 
@@ -82,9 +87,11 @@ public class FrontEnd implements Runnable{
         		if (response.get("serverPort").length()>0){
         		
         			System.out.println("Handling code offload request");
+
+        			//dbcollector.saveTrace(1.0, 1, 1.0, 1.0);        			
         			new Thread(
         					new CodeOffloadManager(System.currentTimeMillis(),
-        							clientSocket, response)
+        							clientSocket, response, dbcollector)
         					).start();
     
         		}else{

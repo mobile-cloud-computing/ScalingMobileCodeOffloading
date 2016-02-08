@@ -23,6 +23,8 @@ import java.util.Map;
 import edu.ut.mobile.network.NetInfo;
 import edu.ut.mobile.network.Pack;
 import edu.ut.mobile.network.ResultPack;
+import fi.cs.ubicomp.database.traces.DBCollector;
+
 
 /**
  * author Huber Flores
@@ -49,9 +51,17 @@ public class CodeOffloadManager implements Runnable{
 	double initialTime;
 	
 	String surrogateNumber;
+	
+	DBCollector dbcollector;
+	
+	//parameters to collect from the request.
+	double paramResponseTime;
+	int paramAccGroup;
+	double paramEnergy;
+	double paramRTT;
 
 
-    public CodeOffloadManager(double time, Socket proxyConnection, Map<String, String> response) {
+    public CodeOffloadManager(double time, Socket proxyConnection, Map<String, String> response, DBCollector dbcollector) {
         this.proxyConnection = proxyConnection;
         this.codeId = response.get("codeId");
         this.jar = response.get("jarFile");
@@ -60,6 +70,7 @@ public class CodeOffloadManager implements Runnable{
         this.initialTime = time;
         
         this.surrogateNumber = response.get("number");
+        this.dbcollector = dbcollector;
                 
     }
 
@@ -86,6 +97,10 @@ public class CodeOffloadManager implements Runnable{
     
             ois.loadClassFromJar(jar);
             request = (Pack) ois.readObject();
+            
+            paramAccGroup = request.getDeviceAccGroup();
+            paramEnergy = request.getDeviceEnergy();
+            paramRTT = request.getDeviceRTT();
     
                        
             NetInfo.ipAddress = getIpAddress(ipAddress);
@@ -115,6 +130,7 @@ public class CodeOffloadManager implements Runnable{
             		success = false;
             		long cloudTime = System.currentTimeMillis() - cloudProcessing;
             		System.out.println("Surrogate: " + surrogateNumber+":"+serverPort + ", Result was null or the execution exceed the waiting time" + ","+ (System.currentTimeMillis() - initialTime - cloudTime) + ",0");
+            		paramResponseTime = -1;
             	}
             	
 
@@ -135,7 +151,8 @@ public class CodeOffloadManager implements Runnable{
     		
     		if (success==true){
     			long cloudTime = System.currentTimeMillis() - cloudProcessing;
-        		System.out.println("Surrogate: " + surrogateNumber + ", Respose was sent to the mobile: " +  response.getresult() + ","+ (System.currentTimeMillis() - initialTime - cloudTime) + ",1");	
+    			paramResponseTime = (System.currentTimeMillis() - initialTime - cloudTime);
+    			System.out.println("Surrogate: " + surrogateNumber + ", Respose was sent to the mobile: " +  response.getresult() + ","+ paramResponseTime + ",1");
     		}
     		
     		
@@ -168,6 +185,8 @@ public class CodeOffloadManager implements Runnable{
                 in = null;
                 out = null;
                 proxyConnection = null;
+                
+                dbcollector.saveTrace(System.currentTimeMillis(), paramAccGroup, paramRTT, paramEnergy, paramResponseTime);
                 
                 
                 
