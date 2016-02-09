@@ -13,6 +13,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import cs.mc.ut.ee.utilities.ParametersSimulator;
+
+
 public class Pack implements Serializable{
     private static final long serialVersionUID = 1;
     String functionName = null;
@@ -37,6 +40,10 @@ public class Pack implements Serializable{
         this.paramValues = paramValues;
         this.paramTypes = FuncDTypes;
         timestamps.add(System.currentTimeMillis()+",client1");
+        
+        accGroup = ParametersSimulator.GenerateInts(0, 5);
+        RTT = ParametersSimulator.GenerateDouble(0, 1000);
+        energy = ParametersSimulator.GenerateDouble(0, 100);
         
     }
 

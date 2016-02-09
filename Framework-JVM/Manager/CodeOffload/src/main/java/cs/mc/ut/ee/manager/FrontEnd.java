@@ -30,7 +30,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import cs.mc.ut.ee.allocation.Surrogate;
-import fi.cs.ubicomp.database.traces.DBCollector;
+//import fi.cs.ubicomp.database.traces.DBCollector;
 
 
 
@@ -47,7 +47,7 @@ public class FrontEnd implements Runnable{
     
     protected int roundRobinCounter = 0;
     
-    DBCollector dbcollector;
+    //DBCollector dbcollector;
     
     public static ArrayList<CodeResources> resources = new ArrayList<CodeResources>();;
     
@@ -55,7 +55,7 @@ public class FrontEnd implements Runnable{
         this.serverPort = port;
         loadBackEndCodeInfo("surrogate.availability");
         
-        dbcollector = DBCollector.getInstance();
+        //dbcollector = DBCollector.getInstance();
      
     }
 
@@ -91,7 +91,7 @@ public class FrontEnd implements Runnable{
         			//dbcollector.saveTrace(1.0, 1, 1.0, 1.0);        			
         			new Thread(
         					new CodeOffloadManager(System.currentTimeMillis(),
-        							clientSocket, response, dbcollector)
+        							clientSocket, response)
         					).start();
     
         		}else{

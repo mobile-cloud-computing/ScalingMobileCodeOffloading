@@ -23,7 +23,9 @@ import java.util.Map;
 import edu.ut.mobile.network.NetInfo;
 import edu.ut.mobile.network.Pack;
 import edu.ut.mobile.network.ResultPack;
-import fi.cs.ubicomp.database.traces.DBCollector;
+import fi.cs.ubicomp.database.traces.TracesCollector;
+/*import fi.cs.ubicomp.database.traces.DBCollector;
+import fi.cs.ubicomp.database.traces.DBInstance;*/
 
 
 /**
@@ -52,16 +54,19 @@ public class CodeOffloadManager implements Runnable{
 	
 	String surrogateNumber;
 	
-	DBCollector dbcollector;
+	//DBCollector dbcollector;
+	//DBInstance dbinstance;
+	TracesCollector collector;
 	
 	//parameters to collect from the request.
 	double paramResponseTime;
 	int paramAccGroup;
 	double paramEnergy;
 	double paramRTT;
+	String paramDeviceId;
 
 
-    public CodeOffloadManager(double time, Socket proxyConnection, Map<String, String> response, DBCollector dbcollector) {
+    public CodeOffloadManager(double time, Socket proxyConnection, Map<String, String> response/*, DBCollector dbcollector*/) {
         this.proxyConnection = proxyConnection;
         this.codeId = response.get("codeId");
         this.jar = response.get("jarFile");
@@ -70,7 +75,10 @@ public class CodeOffloadManager implements Runnable{
         this.initialTime = time;
         
         this.surrogateNumber = response.get("number");
-        this.dbcollector = dbcollector;
+        //this.dbcollector = DBCollector.getInstance();
+       // dbinstance = new DBInstance();
+        
+        collector = new TracesCollector();
                 
     }
 
@@ -94,15 +102,16 @@ public class CodeOffloadManager implements Runnable{
             //-TODO-(automate)
             //mobile application must be identified a priori
             
-    
+            
             ois.loadClassFromJar(jar);
             request = (Pack) ois.readObject();
             
             paramAccGroup = request.getDeviceAccGroup();
             paramEnergy = request.getDeviceEnergy();
             paramRTT = request.getDeviceRTT();
-    
-                       
+            paramDeviceId = request.getDeviceId();
+            
+               
             NetInfo.ipAddress = getIpAddress(ipAddress);
             
             if (NetInfo.ipAddress==null){
@@ -162,10 +171,15 @@ public class CodeOffloadManager implements Runnable{
             
    
         } catch (IOException e) {
+        	System.out.println("Error1: " + e.getMessage());
+        	e.printStackTrace();
+        	
             returnnull(oos);
         } catch (ClassNotFoundException e1) {
+        	System.out.println("Error2: " + e1.getMessage());
             returnnull(oos);
         } catch (Exception e2){
+        	System.out.println("Error3: " + e2.getMessage());
         	e2.printStackTrace();
         } 
         finally {
@@ -186,7 +200,9 @@ public class CodeOffloadManager implements Runnable{
                 out = null;
                 proxyConnection = null;
                 
-                dbcollector.saveTrace(System.currentTimeMillis(), paramAccGroup, paramRTT, paramEnergy, paramResponseTime);
+                //dbcollector.saveTrace(System.currentTimeMillis(), paramAccGroup, paramRTT, paramEnergy, paramResponseTime);
+                //dbinstance.insertTrace(System.currentTimeMillis(), paramAccGroup, paramRTT, paramEnergy, paramResponseTime);
+                collector.saveTrace(System.currentTimeMillis(), paramDeviceId, paramAccGroup, paramRTT, paramEnergy, paramResponseTime);
                 
                 
                 

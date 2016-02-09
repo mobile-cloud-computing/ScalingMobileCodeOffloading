@@ -34,7 +34,8 @@ public class Pack implements Serializable{
     //Community parameters
     int accGroup = 0;
     double RTT = 0;
-    double energy= 0;
+    double energy = 0;
+    String userId = "";
 
     public Pack(String functionName, Class stateType, Object state, Object[] paramValues, Class[] FuncDTypes) {
         this.functionName = functionName;
@@ -82,6 +83,9 @@ public class Pack implements Serializable{
     	return energy;
     }
     
+    public String getDeviceId(){
+    	return userId;
+    }
     
     
     
