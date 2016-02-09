@@ -23,6 +23,7 @@ import edu.ut.mobile.network.NetInfo;
 import edu.ut.mobile.network.Pack;
 import edu.ut.mobile.network.ResultPack;
 
+
 /**
  * author Huber Flores
  */
