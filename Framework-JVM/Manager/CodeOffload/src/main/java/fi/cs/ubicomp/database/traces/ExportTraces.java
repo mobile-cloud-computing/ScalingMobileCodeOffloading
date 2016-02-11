@@ -1,35 +1,31 @@
 package fi.cs.ubicomp.database.traces;
 
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
-public class TracesCollector {
+
+public class ExportTraces {
 	
 	private Connection connect = null;
 	private Statement statement = null;
 	private PreparedStatement preparedStatement = null;
 	
-	public static String TABLENAME = "loadtraces";	
 	
-	public TracesCollector(){
-		
-
-	}
-	
-	
-	public void saveTrace(double timestamp, String device, int accgroup, double rtt, double energy, double responsetime){
-		 try {
+	public void exportTracesToCSV(String fileOutput){
+		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			
 		    connect = DriverManager
 		          .getConnection("jdbc:mysql://localhost/qoe?"
 		              + "user=huberuser&password=huber");
 
-		    String sql = "INSERT INTO " + TABLENAME + "(timestamp, device, acceleration, rtt, energy, responsetime) " +
-	                   "VALUES ("+ timestamp + "," + "\"" + device + "\"" + "," + accgroup + "," + rtt + "," + energy  + "," + responsetime + ");"; 
+		    String sql = "SELECT * from " + TracesCollector.TABLENAME + " INTO OUTFILE '" + fileOutput + "' " +
+		    				" FIELDS ENCLOSED BY '' " + 
+		    				" TERMINATED BY ',' " + 
+		    				" ESCAPED BY '\"' " +
+		    				" LINES TERMINATED BY '\r\n';"; 
 		    
 		    
 		    preparedStatement = connect.
@@ -49,11 +45,8 @@ public class TracesCollector {
 			close();
 			    
 		}
-	     
 		
 	}
-	
-	
 	
 	private void close() {
 	    try {
@@ -68,5 +61,6 @@ public class TracesCollector {
 
 	    }
 	  }
+	
 
 }

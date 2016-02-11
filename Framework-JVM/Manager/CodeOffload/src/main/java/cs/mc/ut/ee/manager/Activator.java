@@ -10,6 +10,7 @@
 package cs.mc.ut.ee.manager;
 
 import edu.ut.mobile.network.NetInfo;
+import fi.cs.ubicomp.database.traces.ExportTraces;
 
 /**
  * author Huber Flores
@@ -32,6 +33,11 @@ public class Activator {
 		    e.printStackTrace();
 		}
 		System.out.println("Stopping Server");
+		
+		//Exporting traces collected in the database
+		ExportTraces export = new ExportTraces();
+		export.exportTracesToCSV("output.csv");
+		
 		server.stop();
 		
 		
