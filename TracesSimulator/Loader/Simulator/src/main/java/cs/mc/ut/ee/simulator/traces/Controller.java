@@ -23,6 +23,10 @@ public class Controller {
 		SimulatorConfiguration operation = new SimulatorConfiguration();
 		Commons.mode = operation.getSimulatorMode();
 		
+		/**
+		 * Operation mode is defined by 'simulator.conf'
+		 */
+		
 		switch(Commons.mode){
 		
 		case 0:
