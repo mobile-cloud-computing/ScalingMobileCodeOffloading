@@ -15,6 +15,7 @@ import java.util.List;
 
 import cs.mc.ut.ee.utilities.Commons;
 import cs.mc.ut.ee.utilities.ParametersSimulator;
+import cs.mc.ut.ee.utilities.WorkLoad;
 
 
 public class Pack implements Serializable{
@@ -60,9 +61,30 @@ public class Pack implements Serializable{
         	}
         }else{
         	if (Commons.mode==1) {
-        		String[] device = ParametersSimulator.getRandomUser();
-        		this.accGroup = Integer.parseInt(device[0]);
-        		this.userId = "user" + device[1];
+        		String[] device = ParametersSimulator.getSnapShotUser();
+        		int promote = ParametersSimulator.getRandomNumber(5); //probability to promote 1/5
+        		
+        		if (promote==1){ //promotion
+        			this.accGroup = Integer.parseInt(device[1]);
+            		this.userId = device[2];
+        			
+        			if (this.accGroup<=WorkLoad.getInstance().getNumberOfGroups()){
+        				this.accGroup = accGroup + 1;
+        				
+        				int index = WorkLoad.getInstance().getSnapShotUserIndex(device[0]);
+        				System.out.println("old: " + device[0] + "," + device[1] + "," + device[2]);
+        				System.out.println("new: " + index +  "," + device[0] + "," +  accGroup + "," + device[2]);
+        				
+        				WorkLoad.getInstance().promoteSnapShotUser(index, device[0], userId, accGroup+"");
+        				
+        			}
+        		}else{ //no promotion
+
+        			this.accGroup = Integer.parseInt(device[1]);
+            		this.userId = device[2];
+        			
+        		}
+        		
         	}else{
         		this.accGroup = 0;
         		this.userId = "-";

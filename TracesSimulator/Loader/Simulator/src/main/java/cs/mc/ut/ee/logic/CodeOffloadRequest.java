@@ -65,7 +65,7 @@ public class CodeOffloadRequest implements Runnable {
 		
 		
 		
-		float [] steps = client.minimax(chess, 4, false);
+		float [] steps = client.minimax(chess, 2, false); //changed to 2 from 4
 		
 		
 	}

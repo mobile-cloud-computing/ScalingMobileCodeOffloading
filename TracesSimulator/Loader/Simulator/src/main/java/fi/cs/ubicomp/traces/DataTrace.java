@@ -24,4 +24,18 @@ public class DataTrace {
 		return this.accGroup;
 	}
 	
+	
+	public void setIndex(int index){
+		this.index = index;
+	}
+	
+	
+	public void setUserId(String userId){
+		this.userId = userId;
+	}
+	
+	public void setAccGroup(String accGroup){
+		this.accGroup = accGroup;
+	}
+	
 }

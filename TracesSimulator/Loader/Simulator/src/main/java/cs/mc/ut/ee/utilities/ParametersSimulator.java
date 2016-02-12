@@ -36,6 +36,15 @@ public class ParametersSimulator {
 		
 	}
 	
+	public static int getRandomNumber(int number){
+		Random r = new Random();
+		
+		int value = r.nextInt(number);
+		
+		
+		return value;
+	}
+	
 	
 	public static String[] getRandomUser(){
 		Random r = new Random();
@@ -45,6 +54,17 @@ public class ParametersSimulator {
 		return new String[]{String.valueOf(accgroup), String.valueOf(user)};
 		
 		
+	}
+	
+	
+	public static String[] getSnapShotUser(){
+		DataTrace user = WorkLoad.getInstance().getSnapShotUser();
+		
+		if (user!=null){
+			return new String[]{ String.valueOf(user.getIndex()), user.getAccGroup(), user.getUserId() };
+		}else{
+			return new String[]{ null, null, null };	
+		}
 	}
 	
 

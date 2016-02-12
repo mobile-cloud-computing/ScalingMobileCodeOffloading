@@ -85,6 +85,7 @@ public class Controller {
 			
 			WorkLoad.getInstance().setNumberOfUsers(numberOfUsers);
 			WorkLoad.getInstance().setAccelerationGroups(numberOfGroups);
+			WorkLoad.getInstance().generateSnapShot();
 
 			new LoadGeneratorArrival().generateLoad(experimentalTime, interarrivalTime);
 			
