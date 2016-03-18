@@ -2,13 +2,13 @@ package cs.mc.ut.ee.simulator.traces;
 
 import java.util.LinkedList;
 
-import cs.mc.ut.ee.logic.CodeOffloadRequest;
 import cs.mc.ut.ee.simulator.concurrent.LoadGeneratorConcurrent;
 import cs.mc.ut.ee.simulator.interarrival.LoadGeneratorArrival;
 import cs.mc.ut.ee.utilities.Commons;
 import cs.mc.ut.ee.utilities.SimulatorConfiguration;
 import cs.mc.ut.ee.utilities.WorkLoad;
 
+import fi.cs.ubicomp.taskpool.MiniMaxRequest;
 import fi.cs.ubicomp.traces.DataTrace;
 import fi.cs.ubicomp.traces.Loader;
 
@@ -54,7 +54,7 @@ public class Controller {
 			
 			
 			for (int i = 0; i<traces.size(); i++){
-				new Thread(new CodeOffloadRequest()).start();
+				new Thread(new MiniMaxRequest()).start();
 			}
 			
 			

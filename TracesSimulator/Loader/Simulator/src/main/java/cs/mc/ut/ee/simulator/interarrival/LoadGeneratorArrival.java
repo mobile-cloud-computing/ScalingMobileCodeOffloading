@@ -1,6 +1,9 @@
 package cs.mc.ut.ee.simulator.interarrival;
 
-import cs.mc.ut.ee.logic.CodeOffloadRequest;
+import java.util.List;
+import java.util.Random;
+
+import cs.ut.ee.algorithm.CodeOffloadingPool;
 
 
 /*
@@ -11,6 +14,8 @@ public class LoadGeneratorArrival {
 	
 	double time;
 	
+	List<String> workload = CodeOffloadingPool.getComputationalWorkload();
+	
 	public void generateLoad(int experimentalTime, double interarrivalTime){
 		//experimentalTime is minutes
 		
@@ -20,7 +25,18 @@ public class LoadGeneratorArrival {
 		double startTime = System.currentTimeMillis();
 		while((System.currentTimeMillis() - startTime) < time){
 			
-			new Thread(new CodeOffloadRequest()).start();
+			try {
+				new Thread((Runnable)ClassLoader.getSystemClassLoader().loadClass(getRandomTask()).newInstance()).start();
+			} catch (InstantiationException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IllegalAccessException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			
 			try {
 				long waiting = (long) (interarrivalTime * 1000);
@@ -35,6 +51,18 @@ public class LoadGeneratorArrival {
 	
 		
 	}
+	
+	public String getRandomTask(){
+		String task;
+		Random r = new Random();
+		
+		int pos = r.nextInt(workload.size());
+		
+		
+		return workload.get(pos);
+		
+	}
+	
 
 
 }
