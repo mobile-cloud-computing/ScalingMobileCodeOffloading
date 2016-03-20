@@ -2,8 +2,10 @@ package cs.ut.ee.algorithm;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -12,10 +14,12 @@ import java.util.jar.JarFile;
 
 public class CodeOffloadingPool {
 	
+	//change to file input
 	private static final String requestsPackage = "fi.cs.ubicomp.taskpool";
+	private static final String jarFilePath = "/home/huber/Desktop/source_code/ScalingOffloading2016/TracesSimulator/Loader/Simulator/target/MobileOffloadSimulator-0.0.1-SNAPSHOT.jar";
     
 
-	private static List<String> /*List<Class>*/ getClassesForPackage(String pkgName) {
+	private List<String> /*List<Class>*/ getClassesForPackage(String pkgName) {
 	    String pkgname = pkgName;
 
 	    List<Class> classes = new ArrayList<Class>();
@@ -26,6 +30,7 @@ public class CodeOffloadingPool {
 	    String relPath = pkgname.replace('.', '/');
 
 	    URL resource = ClassLoader.getSystemClassLoader().getResource(relPath);
+	    
 
 	    if (resource == null) {
 	        throw new RuntimeException("No resource for " + relPath);
@@ -90,16 +95,18 @@ public class CodeOffloadingPool {
 	
 	
 	
-	public static List<String> getComputationalWorkload(){
+	/*public List<String> getComputationalWorkload(){
 		return getClassesForPackage(requestsPackage);
-	}
+	}*/
+	
 	
 	
 	
 	/*Demo*/
-	/*
-	public static void main(String[] args){		
-		List<String> list = CodeOffloadingPool.getClassesForPackage(requestsPackage);
+	/*public static void main(String[] args){	
+		CodeOffloadingPool pool = new CodeOffloadingPool();
+		
+		List<String> list = pool.getClassesForPackage(requestsPackage);
 		
 		
 		for (String task: list){
@@ -118,6 +125,53 @@ public class CodeOffloadingPool {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+		
+	}*/
+	
+	
+	private static List<String> getClassesFromPackage(String pkgName, String fullPath) {
+		
+		try {
+			List<String> tmp = new ArrayList<String>();
+			
+			String relPath = pkgName.replace('.', '/');
+			
+            String jarPath = fullPath.replaceFirst("[.]jar[!].*", ".jar").replaceFirst("file:", "");
+            JarFile jarFile = new JarFile(jarPath);
+            Enumeration<JarEntry> entries = jarFile.entries();
+            while (entries.hasMoreElements()) {
+                JarEntry entry = entries.nextElement();
+                String entryName = entry.getName();
+                if (entryName.startsWith(relPath) && entryName.length() > (relPath.length() + "/".length())) {
+                    String className = entryName.replace('/', '.').replace('\\', '.').replace(".class", "");
+
+                    tmp.add(className);
+                }
+            }
+            
+            return tmp;
+        } catch (IOException e) {
+            throw new RuntimeException(pkgName + " (" + fullPath + ") does not appear to be a valid package", e);
+        }
+
+		
+		
+	}
+	
+
+	public List<String> getComputationalWorkload(){
+		return getClassesFromPackage(requestsPackage, jarFilePath);
+	}
+	
+	
+	/*
+	public static void main(String[] args){
+		
+		List<String> list = getClassesFromPackage(requestsPackage,jarFilePath);
+		
+		for (String entry: list){
+			System.out.println(entry);
 		}
 		
 	}*/

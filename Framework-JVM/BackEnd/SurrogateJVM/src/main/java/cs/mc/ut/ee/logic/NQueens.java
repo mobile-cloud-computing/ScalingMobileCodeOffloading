@@ -10,15 +10,15 @@ import java.util.Vector;
 
 
 
-public class Queens extends CloudRemotable implements Runnable {
+public class NQueens extends CloudRemotable implements Runnable {
 
-    static final String TAG = Queens.class.getSimpleName();
+    static final String TAG = NQueens.class.getSimpleName();
 
     public static int N = 9;
 
     int x;
 
-    public Queens(int N) {         
+    public NQueens(int N) {         
     	x = N; 
     } 
 
@@ -76,7 +76,7 @@ public class Queens extends CloudRemotable implements Runnable {
     }
 
     void copyState(Object state){
-    	Queens localstate = (Queens) state;
+    	NQueens localstate = (NQueens) state;
     	this.x = localstate.x;
     }
 

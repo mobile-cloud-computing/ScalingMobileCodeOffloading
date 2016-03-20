@@ -12,8 +12,10 @@ import cs.ut.ee.algorithm.CodeOffloadingPool;
 
 public class LoadGeneratorConcurrent {
 	
-	List<String> workload = CodeOffloadingPool.getComputationalWorkload();
+	CodeOffloadingPool pool = new CodeOffloadingPool();
 	
+	List<String> workload = pool.getComputationalWorkload();;
+		
 	
 	public void generateLoad(int users){
 		
