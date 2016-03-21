@@ -1,5 +1,7 @@
 package fi.cs.ubicomp.taskpool;
 
+import java.util.Random;
+
 import cs.mc.ut.ee.logic.BubbleSort;
 
 public class BubbleSortRequest implements Runnable {
@@ -12,7 +14,13 @@ public class BubbleSortRequest implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		
-		task = new BubbleSort(10);
+		
+		int max = 10000;
+		Random r = new Random();
+		
+		int size = r.nextInt(max);
+		
+		task = new BubbleSort(size);
 		task.sortFunction();
 		
 		System.out.println("Executed " + TAG);
