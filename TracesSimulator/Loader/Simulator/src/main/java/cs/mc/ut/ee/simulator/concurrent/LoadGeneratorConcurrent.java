@@ -43,6 +43,7 @@ public class LoadGeneratorConcurrent {
 		
 		int pos = r.nextInt(workload.size());
 		
+		System.out.println(workload.get(pos));
 		
 		return workload.get(pos);
 		

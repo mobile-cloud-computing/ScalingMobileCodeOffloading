@@ -170,6 +170,7 @@ public class NetworkManagerServer implements Runnable {
                         		oos.flush();
                         		Object result = method.invoke(state, paramValues);
                         		ResultPack rp = new ResultPack(result, state);
+                        		
                         		rp.setTimeStamps(timestamps);
                         		
                         		//System.out.println("Size in bytes: " + sizeInBytes(rp));

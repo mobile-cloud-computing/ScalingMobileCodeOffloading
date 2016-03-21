@@ -14,7 +14,10 @@ public class LoadGeneratorArrival {
 	
 	double time;
 	
-	List<String> workload = CodeOffloadingPool.getComputationalWorkload();
+	CodeOffloadingPool pool = new CodeOffloadingPool();
+	
+	List<String> workload = pool.getComputationalWorkload();;
+	
 	
 	public void generateLoad(int experimentalTime, double interarrivalTime){
 		//experimentalTime is minutes

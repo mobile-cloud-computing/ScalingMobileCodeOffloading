@@ -164,17 +164,34 @@ public class CodeOffloadingPool {
 		return getClassesFromPackage(requestsPackage, jarFilePath);
 	}
 	
-	
-	/*
-	public static void main(String[] args){
+		
+	/*Demo*/
+	public static void main(String[] args){	
+		CodeOffloadingPool pool = new CodeOffloadingPool();
 		
 		List<String> list = getClassesFromPackage(requestsPackage,jarFilePath);
 		
-		for (String entry: list){
-			System.out.println(entry);
+		
+		for (String task: list){
+			try {
+				
+				new Thread((Runnable)ClassLoader.getSystemClassLoader().loadClass(task).newInstance()).start();
+				
+				
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
-	}*/
+	}
+	
 		
 	
 

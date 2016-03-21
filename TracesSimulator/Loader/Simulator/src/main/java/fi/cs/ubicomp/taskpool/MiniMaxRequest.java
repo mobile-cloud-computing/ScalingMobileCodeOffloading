@@ -1,5 +1,7 @@
 package fi.cs.ubicomp.taskpool;
 
+import java.util.Random;
+
 import cs.mc.ut.ee.logic.MiniMaxRemote;
 
 
@@ -24,12 +26,11 @@ public class MiniMaxRequest implements Runnable {
 	public void run() {
 		// Method invocation of the algorithm to execute remotely
 		
+		Random r = new Random();
 		
-		//BubbleSort
-		
-		//client = new BubbleSort(0);
-		//client.sortFunction();
-		
+		int max = 4;
+		int deep = r.nextInt(max);
+				
 		
 		client = new MiniMaxRemote();
 		
@@ -68,7 +69,7 @@ public class MiniMaxRequest implements Runnable {
 		
 
 		
-		float [] steps = client.minimax(chess, 2, false); //changed to 2 from 4
+		float [] steps = client.minimax(chess, deep, false); 
 
 		
 		System.out.println("Executed " + TAG);

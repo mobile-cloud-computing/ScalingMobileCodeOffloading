@@ -94,23 +94,29 @@ public class NetworkManagerClient {
                 
                 result = (ResultPack) ois.readObject();
                 
-                List<String> timestamps = result.getTimeStamps();
                 
-                /*for (String time: timestamps){
-                	System.out.println("time : " + time);
-                }*/
+                if (result!=null){
+                	List<String> timestamps = result.getTimeStamps();
+                	
+                	/*for (String time: timestamps){
+                		System.out.println("time : " + time);
+                     }*/
+                	
+                	String [] time1 = timestamps.get(0).split(",");
+                    String [] time2 = timestamps.get(1).split(",");
+                    
+                    String [] time3 = timestamps.get(2).split(",");
+                    String [] time4 = timestamps.get(3).split(",");
+                    
+                    double processTime = (Double.parseDouble(time3[0]) - Double.parseDouble(time2[0]));
+                    
+                    
+                    System.out.println("Total time of the request: " + (System.currentTimeMillis() - Double.parseDouble(time1[0])) + "/" + "processing time: " + processTime );
+                }else{
+                	System.out.println("Request was unsuccesful");
+                }
                 
                 
-                String [] time1 = timestamps.get(0).split(",");
-                String [] time2 = timestamps.get(3).split(",");
-                
-                String [] time3 = timestamps.get(1).split(",");
-                String [] time4 = timestamps.get(2).split(",");
-                
-                double processTime = (Double.parseDouble(time4[0]) - Double.parseDouble(time3[0]));
-                
-                
-                System.out.println("Total time of the request: " + (Double.parseDouble(time2[0]) - Double.parseDouble(time1[0])) + "/" + "processing time: " + processTime );
 
                 if((System.currentTimeMillis() - startTime) < NetInfo.waitTime){
                     if(result == null)

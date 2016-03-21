@@ -10,11 +10,9 @@ import java.util.Vector;
 
 
 
-public class NQueens extends CloudRemotable implements Runnable {
+public class NQueens extends CloudRemotable{
 
     static final String TAG = NQueens.class.getSimpleName();
-
-    public static int N = 9;
 
     int x;
 
@@ -80,11 +78,7 @@ public class NQueens extends CloudRemotable implements Runnable {
     	this.x = localstate.x;
     }
 
-    @Override
-    public void run() {
-        enumerateQueens();
-    }
+  
 }
-
 
 
