@@ -4,28 +4,38 @@
   <groupId>MobileOffloadSimulator</groupId>
   <artifactId>MobileOffloadSimulator</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
- 
-  <dependencyManagement>
-  	<dependencies>
-  		
-        
-    <dependency>
-      <groupId>com.googlecode.json-simple</groupId>
-	  <artifactId>json-simple</artifactId>
-	  <version>1.1</version>
-    </dependency>
+
   
+  <!-- command: mvn clean compile assembly:single -->
  
+ 
+  	<dependencies>
+  		 
+    <dependency>
+		<groupId>mysql</groupId>
+		<artifactId>mysql-connector-java</artifactId>
+		<version>5.1.38</version>
+	
+	</dependency>
+  
   	</dependencies>
-  </dependencyManagement>
+
   
   
   <build>
   	<pluginManagement>  
                 <plugins>
-                        <!-- Licence headers -->
                         <plugin>
+            			<artifactId>maven-compiler-plugin</artifactId>
+            			<version>2.3.2</version>
+            				<configuration>
+                				<source>1.6</source>
+                				<target>1.6</target>
+            				</configuration>
+        				</plugin>
+        		
+                        <!-- Licence headers -->
+                         <plugin>
                                 <inherited>false</inherited>
                                 <groupId>com.mycila.maven-license-plugin</groupId>
                                 <artifactId>maven-license-plugin</artifactId>
@@ -64,6 +74,7 @@
                                         </excludes>
                                 </configuration>
                                 <executions>
+                                        
                                         <execution>
                                                 <id>check-headers</id>
                                                 <phase>verify</phase>
@@ -71,47 +82,34 @@
                                                         <goal>format</goal>
                                                 </goals>
                                         </execution>
+                                       
                                 </executions>
                         </plugin>
-
-                        <plugin>
-                                <groupId>org.apache.maven.plugins</groupId>
-                                <artifactId>maven-release-plugin</artifactId>
-                                <version>2.3.2</version>
-                                <configuration>
-                                        <tagBase>https://svn.apache.org/repos/asf/maven/components/releases</tagBase>
-                                </configuration>
-                        </plugin>
-
-						<plugin>
-								<groupId>org.apache.maven.plugins</groupId>
-								<artifactId>maven-compiler-plugin</artifactId>
-								<version>2.3.2</version>
-								<configuration>
-									<source>${jdk.version}</source>
-									<target>${jdk.version}</target>
-								</configuration>
-	 				    </plugin>
-	 				    
-	 				    
-	 				    <plugin>
-  								<groupId>org.apache.maven.plugins</groupId>
-  								<artifactId>maven-jar-plugin</artifactId>
- 								 <version>2.4</version>
-  								<configuration>
-									<archive>
-										<manifest>
-											<mainClass>cs.mc.ut.ee.simulator.traces.Controller</mainClass> 
-										</manifest>
-									</archive>
-  								</configuration>
- 						</plugin>
-
-                        <plugin>
-                                <groupId>org.apache.maven.plugins</groupId>
-                                <artifactId>maven-dependency-plugin</artifactId>
-                                <version>2.2</version>
-                        </plugin>
+				
+	        
+           				 <plugin>
+              				  <groupId>org.apache.maven.plugins</groupId>
+               				  <artifactId>maven-assembly-plugin</artifactId>
+             				   <configuration>
+                   				 <descriptorRefs>
+                      				  <descriptorRef>jar-with-dependencies</descriptorRef>
+                   				 </descriptorRefs>
+                  				 <archive>
+                  					  <manifest>
+                   					     <mainClass>cs.mc.ut.ee.simulator.traces.Controller</mainClass>
+                 				 	  </manifest>
+               					 </archive>
+               				   </configuration>
+               					 <executions>
+                  				  <execution>
+                   				     <phase>package</phase>
+                   					     <goals>
+                    				        <goal>single</goal>
+                  					      </goals>
+                  				  </execution>
+               					 </executions>
+           				 </plugin>
+       
                 </plugins>
           </pluginManagement>
         </build>

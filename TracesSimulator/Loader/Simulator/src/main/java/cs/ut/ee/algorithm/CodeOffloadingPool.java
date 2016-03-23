@@ -15,9 +15,11 @@ import java.util.jar.JarFile;
 public class CodeOffloadingPool {
 	
 	//change to file input
+	//private static final String fileLibs = "MobileOffloadSimulator-0.0.1-SNAPSHOT.jar";
+	private static final String fileLibs = "MobileOffloadSimulator-0.0.1-SNAPSHOT-jar-with-dependencies.jar";
 	private static final String requestsPackage = "fi.cs.ubicomp.taskpool";
-	private static final String jarFilePath = "/home/huber/Desktop/source_code/ScalingOffloading2016/TracesSimulator/Loader/Simulator/target/MobileOffloadSimulator-0.0.1-SNAPSHOT.jar";
-    
+	private static final String jarFilePath = "/home/huber/Desktop/source_code/ScalingOffloading2016/TracesSimulator/Loader/Simulator/target/" + fileLibs;
+	
 
 	private List<String> /*List<Class>*/ getClassesForPackage(String pkgName) {
 	    String pkgname = pkgName;

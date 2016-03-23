@@ -8,6 +8,8 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.List;
 
+import fi.cs.ubicomp.database.TracesCollector;
+
 
 public class NetworkManagerClient {
     int portnum;
@@ -21,6 +23,8 @@ public class NetworkManagerClient {
     byte []serverAddress =new byte[4];
     CloudController callingparent = null;
     long startTime = 0;
+    
+    TracesCollector collector;
 
     public NetworkManagerClient(byte[] serverAddress, int port) {
 
@@ -77,6 +81,8 @@ public class NetworkManagerClient {
 
         public Sending(Pack MyPack) {
             this.MyPack = MyPack;
+            
+            collector = new TracesCollector();
         }
 
 
@@ -112,8 +118,12 @@ public class NetworkManagerClient {
                     
                     
                     System.out.println("Total time of the request: " + (System.currentTimeMillis() - Double.parseDouble(time1[0])) + "/" + "processing time: " + processTime );
+                    collector.saveTrace(System.currentTimeMillis(), Double.parseDouble(time1[0]), Double.parseDouble(time2[0]), Double.parseDouble(time3[0]), 
+                    		Double.parseDouble(time4[0]), (Double.parseDouble(time3[0]) - Double.parseDouble(time2[0])), (System.currentTimeMillis() - Double.parseDouble(time1[0])));
+                    
                 }else{
                 	System.out.println("Request was unsuccesful");
+                	collector.saveTrace(System.currentTimeMillis(), 0, 0, 0, 0, 0, 0);
                 }
                 
                 
